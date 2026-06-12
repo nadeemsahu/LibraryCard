@@ -1,11 +1,14 @@
 package com.piotrekwitkowski.libraryhce
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.res.ColorStateList
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -62,6 +65,9 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
     private lateinit var layoutUnsupportedOverlay: View
     private lateinit var layoutNfcDisabledOverlay: View
 
+    // Scan pulse animation
+    private var scanPulseAnimator: AnimatorSet? = null
+
     private var lastScanTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,6 +113,11 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
         findViewById<View>(R.id.btnCancelPayment)?.setOnClickListener {
             appViewModel.setPaymentEmulationActive(false)
         }
+
+        // Fix: wire the payment-rejected overlay dismiss button (was never connected)
+        findViewById<View>(R.id.btnPaymentRejectedDismiss)?.setOnClickListener {
+            findViewById<View>(R.id.layoutPaymentRejectedOverlay)?.visibility = View.GONE
+        }
     }
 
     private fun setupNavigation() {
@@ -146,11 +157,13 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
                 updateScanButtonUi(isActive)
                 if (isActive) {
                     layoutScanOverlay.visibility = View.VISIBLE
+                    startScanPulseAnimation()
                     if (nfcSessionManager.isNfcEnabled) {
                         nfcSessionManager.enableReaderMode(this@MainActivity)
                     }
                 } else {
                     layoutScanOverlay.visibility = View.GONE
+                    stopScanPulseAnimation()
                     nfcSessionManager.disableReaderMode()
                 }
             }
@@ -194,6 +207,49 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
             navScan.backgroundTintList = null
             imgNavScan.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.bg_void))
             txtNavScan.setTextColor(ContextCompat.getColor(this, R.color.bg_void))
+        }
+    }
+
+    private fun startScanPulseAnimation() {
+        stopScanPulseAnimation()
+        val ring1 = findViewById<View>(R.id.pulseRing1) ?: return
+        val ring2 = findViewById<View>(R.id.pulseRing2) ?: return
+        val ring3 = findViewById<View>(R.id.pulseRing3) ?: return
+
+        fun pulseAnimator(view: View, durationMs: Long, startDelayMs: Long): AnimatorSet {
+            val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.85f, 1.1f, 0.85f)
+            val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0.85f, 1.1f, 0.85f)
+            val alpha  = ObjectAnimator.ofFloat(view, "alpha",  view.alpha, view.alpha * 0.5f, view.alpha)
+            return AnimatorSet().apply {
+                playTogether(scaleX, scaleY, alpha)
+                duration = durationMs
+                this.startDelay = startDelayMs
+                interpolator = AccelerateDecelerateInterpolator()
+                repeatCount = ObjectAnimator.INFINITE  // applied to children below
+                scaleX.repeatCount = ObjectAnimator.INFINITE
+                scaleY.repeatCount = ObjectAnimator.INFINITE
+                alpha.repeatCount  = ObjectAnimator.INFINITE
+            }
+        }
+
+        val a1 = pulseAnimator(ring1, 1800, 0)
+        val a2 = pulseAnimator(ring2, 1800, 300)
+        val a3 = pulseAnimator(ring3, 1800, 600)
+
+        scanPulseAnimator = AnimatorSet().apply {
+            playTogether(a1, a2, a3)
+            start()
+        }
+    }
+
+    private fun stopScanPulseAnimation() {
+        scanPulseAnimator?.cancel()
+        scanPulseAnimator = null
+        // Reset ring scale/alpha to their XML defaults so they look right next time
+        listOf(R.id.pulseRing1, R.id.pulseRing2, R.id.pulseRing3).forEach { id ->
+            val ring = findViewById<View>(id) ?: return@forEach
+            ring.scaleX = 1f
+            ring.scaleY = 1f
         }
     }
 
