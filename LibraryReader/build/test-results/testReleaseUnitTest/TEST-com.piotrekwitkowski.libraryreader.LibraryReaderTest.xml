@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.piotrekwitkowski.libraryreader.LibraryReaderTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-06-12T05:39:35" hostname="DESKTOP-5OL53VK" time="0.001">
+  <properties/>
+  <testcase name="addition_isCorrect" classname="com.piotrekwitkowski.libraryreader.LibraryReaderTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,7 @@
+#Fri Jun 12 11:09:35 IST 2026
+base.1=C\:\\Users\\NADEEM\\Desktop\\LibraryNFC-master\\LibraryCard\\LibraryReader\\build\\intermediates\\global_synthetics_dex\\release\\mergeReleaseGlobalSynthetics\\classes.dex
+path.1=classes.dex
+base.0=C\:\\Users\\NADEEM\\Desktop\\LibraryNFC-master\\LibraryCard\\LibraryReader\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
+renamed.1=classes2.dex
+renamed.0=classes.dex
+path.0=classes.dex

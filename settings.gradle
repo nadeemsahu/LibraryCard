@@ -1,5 +1,4 @@
 rootProject.name='Library NFC'
-include ':LibraryReader'
+include ':LibraryCard'
 include ':nfc'
 include ':log'
-include ':LibraryHCE'

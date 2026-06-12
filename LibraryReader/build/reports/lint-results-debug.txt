@@ -1,0 +1,221 @@
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\layout\activity_main.xml:164: Warning: The vertically scrolling ScrollView should not contain another vertically scrolling widget (ScrollView) [NestedScrolling]
+                <ScrollView
+                 ~~~~~~~~~~
+
+   Explanation for issues of type "NestedScrolling":
+   A scrolling widget such as a ScrollView should not contain any nested
+   scrolling widgets since this has various usability issues
+
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\build.gradle:35: Warning: A newer version of androidx.appcompat:appcompat than 1.1.0 is available: 1.7.1 [GradleDependency]
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\build.gradle:36: Warning: A newer version of androidx.constraintlayout:constraintlayout than 1.1.3 is available: 2.2.1 [GradleDependency]
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\build.gradle:38: Warning: A newer version of androidx.test.ext:junit than 1.1.1 is available: 1.3.0 [GradleDependency]
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\build.gradle:39: Warning: A newer version of androidx.test.espresso:espresso-core than 3.2.0 is available: 3.7.0 [GradleDependency]
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "GradleDependency":
+   This detector looks for usages of libraries where the version you are using
+   is not the current stable release. Using older versions is fine, and there
+   are cases where you deliberately want to stick with an older version.
+   However, you may simply not be aware that a more recent version is
+   available, and that is what this lint check helps find.
+
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\layout\activity_main.xml:7: Warning: Possible overdraw: Root element paints background #F5F5FA with a theme that also paints a background (inferred theme is @style/AppTheme) [Overdraw]
+    android:background="#F5F5FA"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "Overdraw":
+   If you set a background drawable on a root view, then you should use a
+   custom theme where the theme background is null. Otherwise, the theme
+   background will be painted first, only to have your custom background
+   completely cover it; this is called "overdraw".
+
+   NOTE: This detector relies on figuring out which layouts are associated
+   with which activities based on scanning the Java code, and it's currently
+   doing that using an inexact pattern matching algorithm. Therefore, it can
+   incorrectly conclude which activity the layout is associated with and then
+   wrongly complain that a background-theme is hidden.
+
+   If you want your custom background on multiple pages, then you should
+   consider making a custom theme with your custom background and just using
+   that theme instead of a root element background.
+
+   Of course it's possible that your custom drawable is translucent and you
+   want it to be mixed with the background. However, you will get better
+   performance if you pre-mix the background with your drawable and use that
+   resulting image or color as a custom theme background instead.
+
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-hdpi\app_icon.png: Warning: The resource R.mipmap.app_icon appears to be unused [UnusedResources]
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\drawable\ic_launcher_background.xml:2: Warning: The resource R.drawable.ic_launcher_background appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+^
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\drawable-v24\ic_launcher_foreground.xml:1: Warning: The resource R.drawable.ic_launcher_foreground appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+^
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\drawable\ic_launcher_foreground_vector.xml:1: Warning: The resource R.drawable.ic_launcher_foreground_vector appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+^
+
+   Explanation for issues of type "UnusedResources":
+   Unused resources make applications larger and slow down builds.
+
+
+   The unused resource check can ignore tests. If you want to include
+   resources that are only referenced from tests, consider packaging them in a
+   test source set instead.
+
+   You can include test sources in the unused resource check by setting the
+   system property lint.unused-resources.include-tests =true, and to exclude
+   them (usually for performance reasons), use
+   lint.unused-resources.exclude-tests =true.
+   ,
+
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-hdpi\ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-mdpi\ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-xhdpi\ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-xxhdpi\ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-xxxhdpi\ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-hdpi\ic_launcher_round.png: Warning: Launcher icon used as round icon did not have a circular shape [IconLauncherShape]
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-mdpi\ic_launcher_round.png: Warning: Launcher icon used as round icon did not have a circular shape [IconLauncherShape]
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-xhdpi\ic_launcher_round.png: Warning: Launcher icon used as round icon did not have a circular shape [IconLauncherShape]
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-xxhdpi\ic_launcher_round.png: Warning: Launcher icon used as round icon did not have a circular shape [IconLauncherShape]
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-xxxhdpi\ic_launcher_round.png: Warning: Launcher icon used as round icon did not have a circular shape [IconLauncherShape]
+
+   Explanation for issues of type "IconLauncherShape":
+   According to the Android Design Guide
+   (https://d.android.com/r/studio-ui/designer/material/iconography) your
+   launcher icons should "use a distinct silhouette", a "three-dimensional,
+   front view, with a slight perspective as if viewed from above, so that
+   users perceive some depth."
+
+   The unique silhouette implies that your launcher icon should not be a
+   filled square.
+
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-xxxhdpi\app_icon.png: Warning: The image app_icon.png varies significantly in its density-independent (dip) size across the various density versions: mipmap-hdpi/app_icon.png: 683x683 dp (1024x1024 px), mipmap-xhdpi/app_icon.png: 512x512 dp (1024x1024 px), mipmap-xxhdpi/app_icon.png: 341x341 dp (1024x1024 px), mipmap-xxxhdpi/app_icon.png: 256x256 dp (1024x1024 px) [IconDipSize]
+
+   Explanation for issues of type "IconDipSize":
+   Checks the all icons which are provided in multiple densities, all compute
+   to roughly the same density-independent pixel (dip) size. This catches
+   errors where images are either placed in the wrong folder, or icons are
+   changed to new sizes but some folders are forgotten.
+
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-xxxhdpi\app_icon.png: Warning: The app_icon.png icon has identical contents in the following configuration folders: mipmap-hdpi, mipmap-xhdpi, mipmap-xxhdpi, mipmap-xxxhdpi [IconDuplicatesConfig]
+
+   Explanation for issues of type "IconDuplicatesConfig":
+   If an icon is provided under different configuration parameters such as
+   drawable-hdpi or -v11, they should typically be different. This detector
+   catches cases where the same icon is provided in different configuration
+   folder which is usually not intentional.
+
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-hdpi\ic_launcher_round.png: Warning: The following unrelated icon files have identical contents: ic_launcher.png, ic_launcher_round.png [IconDuplicates]
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-mdpi\ic_launcher_round.png: Warning: The following unrelated icon files have identical contents: ic_launcher.png, ic_launcher_round.png [IconDuplicates]
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-xhdpi\ic_launcher_round.png: Warning: The following unrelated icon files have identical contents: ic_launcher.png, ic_launcher_round.png [IconDuplicates]
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-xxhdpi\ic_launcher_round.png: Warning: The following unrelated icon files have identical contents: ic_launcher.png, ic_launcher_round.png [IconDuplicates]
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\mipmap-xxxhdpi\ic_launcher_round.png: Warning: The following unrelated icon files have identical contents: ic_launcher.png, ic_launcher_round.png [IconDuplicates]
+
+   Explanation for issues of type "IconDuplicates":
+   If an icon is repeated under different names, you can consolidate and just
+   use one of the icons and delete the others to make your application
+   smaller. However, duplicated icons usually are not intentional and can
+   sometimes point to icons that were accidentally overwritten or accidentally
+   not updated.
+
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\java\com\piotrekwitkowski\libraryreader\MainActivity.java:42: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                readerStatusText.setText("Payment card detected — cannot import.");
+                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\java\com\piotrekwitkowski\libraryreader\MainActivity.java:79: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            nfcStatusText.setText("NFC Not Supported");
+                                  ~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\java\com\piotrekwitkowski\libraryreader\MainActivity.java:81: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            readerStatusText.setText("Hardware Unavailable");
+                                     ~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\java\com\piotrekwitkowski\libraryreader\MainActivity.java:86: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            nfcStatusText.setText("NFC Disabled");
+                                  ~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\java\com\piotrekwitkowski\libraryreader\MainActivity.java:88: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            readerStatusText.setText("NFC Disabled");
+                                     ~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\java\com\piotrekwitkowski\libraryreader\MainActivity.java:93: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            nfcStatusText.setText("NFC Ready & Active");
+                                  ~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\java\com\piotrekwitkowski\libraryreader\MainActivity.java:95: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            readerStatusText.setText("Ready. Hold card near phone back.");
+                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\java\com\piotrekwitkowski\libraryreader\MainActivity.java:111: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            readerStatusText.setText("Card detected! Processing...");
+                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\java\com\piotrekwitkowski\libraryreader\MainActivity.java:119: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                readerStatusText.setText("Error reading card.");
+                                         ~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "SetTextI18n":
+   When calling TextView#setText
+   * Never call Number#toString() to format numbers; it will not handle
+   fraction separators and locale-specific digits properly. Consider using
+   String#format with proper format specifications (%d or %f) instead.
+   * Do not pass a string literal (e.g. "Hello") to display text. Hardcoded
+   text can not be properly translated to other languages. Consider using
+   Android resource strings instead.
+   * Do not build messages by concatenating text chunks. Such messages can not
+   be properly translated.
+
+   https://developer.android.com/guide/topics/resources/localization.html
+
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\layout\activity_main.xml:23: Warning: Hardcoded string "Library NFC Reader", should use @string resource [HardcodedText]
+            android:text="Library NFC Reader"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\layout\activity_main.xml:32: Warning: Hardcoded string "NFC Card / HCE Reader Mode", should use @string resource [HardcodedText]
+            android:text="NFC Card / HCE Reader Mode"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\layout\activity_main.xml:64: Warning: Hardcoded string "NFC Hardware Status", should use @string resource [HardcodedText]
+                    android:text="NFC Hardware Status"
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\layout\activity_main.xml:74: Warning: Hardcoded string "Checking...", should use @string resource [HardcodedText]
+                    android:text="Checking..."
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\layout\activity_main.xml:85: Warning: Hardcoded string "Enable NFC Settings", should use @string resource [HardcodedText]
+                    android:text="Enable NFC Settings"
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\layout\activity_main.xml:104: Warning: Hardcoded string "Reader Activity", should use @string resource [HardcodedText]
+                    android:text="Reader Activity"
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\layout\activity_main.xml:114: Warning: Hardcoded string "Ready. Hold card near phone back.", should use @string resource [HardcodedText]
+                    android:text="Ready. Hold card near phone back."
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\layout\activity_main.xml:123: Warning: Hardcoded string "Reads from physical DESFire cards or HCE-emulated ones.", should use @string resource [HardcodedText]
+                    android:text="Reads from physical DESFire cards or HCE-emulated ones."
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\layout\activity_main.xml:147: Warning: Hardcoded string "Terminal Log Output", should use @string resource [HardcodedText]
+                        android:text="Terminal Log Output"
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\layout\activity_main.xml:156: Warning: Hardcoded string "CLEAR", should use @string resource [HardcodedText]
+                        android:text="CLEAR"
+                        ~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\layout\activity_main.xml:176: Warning: Hardcoded string "Log Console Initialized...", should use @string resource [HardcodedText]
+                        android:text="Log Console Initialized..." />
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\NADEEM\Desktop\LibraryNFC-master\LibraryCard\LibraryReader\src\main\res\layout\activity_main.xml:195: Warning: Hardcoded string "NFC Reader Mode Enabled", should use @string resource [HardcodedText]
+            android:text="NFC Reader Mode Enabled"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "HardcodedText":
+   Hardcoding text attributes directly in layout files is bad for several
+   reasons:
+
+   * When creating configuration variations (for example for landscape or
+   portrait) you have to repeat the actual text (and keep it up to date when
+   making changes)
+
+   * The application cannot be translated to other languages by just adding
+   new translations for existing string resources.
+
+   There are quickfixes to automatically extract this hardcoded string into a
+   resource lookup.
+
+0 errors, 48 warnings
