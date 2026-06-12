@@ -1,0 +1,9 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <!-- Minimalist NFC wave icon -->
+  <path android:fillColor="#FFFFFFFF"
+        android:pathData="M1,9L1,15C1,16.1 1.9,17 3,17H5V7H3C1.9,7 1,7.9 1,9ZM19,7H13V9H19V15H13V17H19C20.1,17 21,16.1 21,15V9C21,7.9 20.1,7 19,7ZM11,7H9C7.9,7 7,7.9 7,9V15C7,16.1 7.9,17 9,17H11C12.1,17 13,16.1 13,15V9C13,7.9 12.1,7 11,7ZM11,15H9V9H11V15Z"/>
+</vector>

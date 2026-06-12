@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="125dp"
+    android:layout_height="80dp"
+    android:background="@drawable/mini_card_background"
+    android:layout_marginRight="12dp"
+    android:padding="12dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <TextView
+        android:id="@+id/tvMiniName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nadeem's Card"
+        android:textColor="#E5E5E5"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:letterSpacing="0.01"/>
+
+    <TextView
+        android:id="@+id/tvMiniId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvMiniName"
+        android:layout_marginTop="2dp"
+        android:text="HUHS0585686"
+        android:textColor="#6A6A75"
+        android:textSize="9sp"
+        android:fontFamily="monospace"
+        android:singleLine="true"/>
+
+    <View
+        android:id="@+id/borderSelected"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentBottom="true"
+        android:background="#D9FF3F"
+        android:visibility="gone"/>
+
+</RelativeLayout>

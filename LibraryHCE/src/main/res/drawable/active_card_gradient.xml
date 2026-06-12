@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Lime accent overlay on active card -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="#00D9FF3F"
+        android:endColor="#18D9FF3F"
+        android:angle="135"/>
+    <stroke android:width="1dp" android:color="#33D9FF3F" />
+    <corners android:radius="20dp" />
+</shape>

@@ -1,0 +1,1237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_void"
+    android:fitsSystemWindows="true">
+
+    <!-- Container for Screens -->
+    <FrameLayout
+        android:id="@+id/container_screens"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_nav_container">
+
+        <!-- 1. HOME SCREEN LAYOUT -->
+        <ScrollView
+            android:id="@+id/layout_home"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- Header Title: Editorial and Minimal -->
+                <LinearLayout
+                    android:id="@+id/layoutHomeHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="35dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="membership credentials"
+                            android:textColor="@color/text_muted"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:letterSpacing="0.15"
+                            android:textAllCaps="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="library card"
+                            android:textColor="@color/text_primary"
+                            android:textSize="26sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="4dp"
+                            android:letterSpacing="0.01"/>
+                    </LinearLayout>
+
+                    <!-- Muted Elegant Status Dot -->
+                    <View
+                        android:id="@+id/viewHcePulseDot"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:background="@drawable/button_accent_gradient"
+                        android:backgroundTint="@color/accent_lime"
+                        android:layout_marginRight="6dp" />
+                </LinearLayout>
+
+                <!-- HERO CARD: Premium Graphite Card Showcase -->
+                <RelativeLayout
+                    android:id="@+id/cardActiveHero"
+                    android:layout_width="match_parent"
+                    android:layout_height="215dp"
+                    android:background="@drawable/luxury_card_gradient"
+                    android:padding="24dp"
+                    android:elevation="12dp"
+                    android:layout_marginBottom="35dp">
+
+                    <!-- Top Labels -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="LIBRARY MEMBER"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.2" />
+
+                    <TextView
+                        android:id="@+id/tvCardStatusLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="READY"
+                        android:textColor="@color/accent_lime"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1" />
+
+                    <!-- Chip and Contactless Graphics -->
+                    <ImageView
+                        android:id="@+id/imgChip"
+                        android:layout_width="45dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_chip"
+                        android:layout_marginTop="38dp" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_nfc_wave"
+                        android:layout_toRightOf="@id/imgChip"
+                        android:layout_alignTop="@id/imgChip"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="6dp"
+                        app:tint="@color/text_muted" />
+
+                    <!-- Monospaced Library ID representation -->
+                    <TextView
+                        android:id="@+id/tvHeroCardId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="HUHS 0585 6860"
+                        android:textColor="@color/text_primary"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:fontFamily="monospace"
+                        android:layout_above="@id/tvHeroCardName"
+                        android:layout_marginBottom="12dp"
+                        android:letterSpacing="0.05" />
+
+                    <!-- Cardholder Name -->
+                    <TextView
+                        android:id="@+id/tvHeroCardName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MEMBER CARD"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="5dp"
+                        android:letterSpacing="0.1" />
+
+                    <TextView
+                        android:id="@+id/tvCardSystemCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="5dp"
+                        android:text="SECURE"
+                        android:textColor="@color/border_subtle"
+                        android:textSize="10sp"
+                        android:fontFamily="monospace"
+                        android:letterSpacing="0.1"/>
+
+                    <!-- Shiny reflection overlay -->
+                    <View
+                        android:id="@+id/viewCardShine"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shine_gradient"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:translationX="-200dp" />
+                </RelativeLayout>
+
+                <!-- Saved Cards Section Header -->
+                <TextView
+                    android:id="@+id/tvSwapperTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="your collection"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.15"
+                    android:textAllCaps="true"
+                    android:layout_marginBottom="16dp"/>
+
+                <HorizontalScrollView
+                    android:id="@+id/scrollSwapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none"
+                    android:layout_marginBottom="25dp">
+
+                    <LinearLayout
+                        android:id="@+id/layoutCardSwapper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8dp">
+                        <!-- Preview items generated dynamically -->
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <!-- Compatibility container holds hidden hardware dump tags to preserve code-binding safety -->
+                <LinearLayout
+                    android:id="@+id/layoutStatusCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/tvHomeNfcStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""/>
+                    <Button
+                        android:id="@+id/btnHomeEnableNfc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutTapGuideCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- 2. CARDS SCREEN LAYOUT -->
+        <ScrollView
+            android:id="@+id/layout_cards"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="cards"
+                    android:textColor="@color/text_primary"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="30dp"
+                    android:letterSpacing="0.01" />
+
+                <!-- Vertical Cards profiles layout -->
+                <LinearLayout
+                    android:id="@+id/layoutVerticalCards"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="16dp">
+                    <!-- Dynamic Profile Card tiles inserted here -->
+                </LinearLayout>
+
+                <!-- Empty state: shown when no cards exist -->
+                <LinearLayout
+                    android:id="@+id/layoutEmptyState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/glass_card_background"
+                    android:padding="40dp"
+                    android:layout_marginBottom="35dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="no cards yet"
+                        android:textColor="@color/text_primary"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_marginBottom="12dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="tap the scan button below to hold your physical library card against your phone and import your credentials"
+                        android:textColor="@color/text_muted"
+                        android:textSize="13sp"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.4"
+                        android:layout_marginBottom="28dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="↓  tap scan"
+                        android:textColor="@color/accent_lime"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.2"
+                        android:textAllCaps="true"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- 4. SETTINGS SCREEN LAYOUT -->
+        <ScrollView
+            android:id="@+id/layout_settings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="settings"
+                    android:textColor="@color/text_primary"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="30dp"
+                    android:letterSpacing="0.01" />
+
+
+
+                <!-- Card Config Preferences -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/glass_card_background"
+                    android:padding="20dp"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="information"
+                        android:textColor="@color/text_muted"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.15"
+                        android:textAllCaps="true"
+                        android:layout_marginBottom="16dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="application: library card"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="version: 2.2 (exclusive membership edition)"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp"
+                        android:layout_marginTop="6dp" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </FrameLayout>
+
+    <!-- FLOATING BOTTOM NAVIGATION BAR -->
+    <RelativeLayout
+        android:id="@+id/bottom_nav_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingBottom="20dp"
+        android:background="@android:color/transparent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:background="@drawable/luxury_nav_background"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:elevation="8dp">
+
+            <!-- Tab 1: Home -->
+            <LinearLayout
+                android:id="@+id/nav_home"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/imgNavHome"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_home"
+                    app:tint="#F5F5F5" />
+
+                <TextView
+                    android:id="@+id/txtNavHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Home"
+                    android:textColor="#F5F5F5"
+                    android:textSize="10sp"
+                    android:layout_marginTop="3dp" />
+            </LinearLayout>
+
+            <!-- Tab 2: Cards -->
+            <LinearLayout
+                android:id="@+id/nav_cards"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/imgNavCards"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_cards"
+                    app:tint="@color/text_muted" />
+
+                <TextView
+                    android:id="@+id/txtNavCards"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cards"
+                    android:textColor="@color/text_muted"
+                    android:textSize="10sp"
+                    android:layout_marginTop="3dp" />
+            </LinearLayout>
+
+            <!-- Tab 3: Central SCAN Indicator button -->
+            <LinearLayout
+                android:id="@+id/nav_scan"
+                android:layout_width="164dp"
+                android:layout_height="44dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@drawable/scan_button_background"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/imgNavScan"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_scan"
+                    app:tint="@color/bg_void" />
+
+                <TextView
+                    android:id="@+id/txtNavScan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SCAN YOUR CARD"
+                    android:textColor="@color/bg_void"
+                    android:textSize="10.5sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="8dp"
+                    android:letterSpacing="0.04" />
+            </LinearLayout>
+
+
+
+            <!-- Tab 5: Settings -->
+            <LinearLayout
+                android:id="@+id/nav_settings"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/imgNavSettings"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_settings"
+                    app:tint="@color/text_muted" />
+
+                <TextView
+                    android:id="@+id/txtNavSettings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Settings"
+                    android:textColor="@color/text_muted"
+                    android:textSize="10sp"
+                    android:layout_marginTop="3dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- FUTURISTIC SCANNING OVERLAY -->
+    <!-- PREMIUM MINTING SCANNING OVERLAY -->
+    <RelativeLayout
+        android:id="@+id/layoutScanOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FA09090C"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        android:elevation="20dp">
+
+        <!-- Outer Ring 3 -->
+        <View
+            android:id="@+id/pulseRing3"
+            android:layout_width="260dp"
+            android:layout_height="260dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/scan_ring"
+            android:backgroundTint="@color/accent_lime"
+            android:alpha="0.2"/>
+
+        <!-- Outer Ring 2 -->
+        <View
+            android:id="@+id/pulseRing2"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/scan_ring"
+            android:backgroundTint="@color/accent_lime"
+            android:alpha="0.3"/>
+
+        <!-- Outer Ring 1 -->
+        <View
+            android:id="@+id/pulseRing1"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/scan_ring"
+            android:backgroundTint="@color/accent_lime"
+            android:alpha="0.5"/>
+
+        <!-- Central Glowing Circle -->
+        <FrameLayout
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/scan_button_background"
+            android:backgroundTint="@color/bg_surface"
+            android:elevation="6dp">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_scan"
+                android:layout_gravity="center"
+                app:tint="@color/accent_lime" />
+        </FrameLayout>
+
+        <!-- Details label -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="100dp"
+            android:padding="32dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MINT A NEW CARD"
+                android:textColor="@color/accent_lime"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.2"
+                android:layout_marginBottom="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hold your physical library card against the back of your phone to import your credentials."
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:layout_marginBottom="35dp"
+                android:lineSpacingMultiplier="1.2"/>
+
+            <Button
+                android:id="@+id/btnCancelScan"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:text="Cancel"
+                android:textColor="@color/text_primary"
+                android:backgroundTint="@color/bg_card"
+                android:textAllCaps="false"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!-- PREMIUM PAY/EMULATE FULLSCREEN OVERLAY -->
+    <RelativeLayout
+        android:id="@+id/layoutPaymentOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F809090C"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        android:elevation="25dp">
+
+        <!-- Ambient Background Radial Glow -->
+        <View
+            android:id="@+id/viewPaymentBgGlow"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shine_gradient"
+            android:backgroundTint="@color/accent_lime_ghost"
+            android:alpha="0.75" />
+
+        <!-- Ambient Ripple Concentric Rings -->
+        <View
+            android:id="@+id/paymentRing3"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/scan_ring"
+            android:backgroundTint="@color/accent_lime"
+            android:alpha="0.15"/>
+
+        <View
+            android:id="@+id/paymentRing2"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/scan_ring"
+            android:backgroundTint="@color/accent_lime"
+            android:alpha="0.25"/>
+
+        <View
+            android:id="@+id/paymentRing1"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/scan_ring"
+            android:backgroundTint="@color/accent_lime"
+            android:alpha="0.45"/>
+
+        <!-- Futuristic Emulated Card Showcase Container (Scales up & tilts) -->
+        <RelativeLayout
+            android:id="@+id/cardPaymentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:background="@drawable/luxury_card_gradient"
+            android:padding="24dp"
+            android:elevation="12dp">
+
+            <!-- Card Header Labels -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LIBRARY MEMBER"
+                android:textColor="@color/text_secondary"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.2" />
+
+            <TextView
+                android:id="@+id/tvPaymentStatusLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="SECURE LOCKED"
+                android:textColor="@color/accent_lime"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.1" />
+
+            <!-- Chip and contactless waves -->
+            <ImageView
+                android:id="@+id/imgPaymentChip"
+                android:layout_width="45dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_chip"
+                android:layout_marginTop="38dp" />
+
+            <ImageView
+                android:id="@+id/imgPaymentWave"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_nfc_wave"
+                android:layout_toRightOf="@id/imgPaymentChip"
+                android:layout_alignTop="@id/imgPaymentChip"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="6dp"
+                app:tint="@color/text_muted" />
+
+            <!-- Card ID display -->
+            <TextView
+                android:id="@+id/tvPaymentCardId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HUHS 0585 6860"
+                android:textColor="@color/text_primary"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:fontFamily="monospace"
+                android:layout_above="@id/tvPaymentCardName"
+                android:layout_marginBottom="12dp"
+                android:letterSpacing="0.05" />
+
+            <!-- Cardholder display -->
+            <TextView
+                android:id="@+id/tvPaymentCardName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MEMBER CARD"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="5dp"
+                android:letterSpacing="0.1" />
+
+            <TextView
+                android:id="@+id/tvPaymentSystemCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="5dp"
+                android:text="SECURE"
+                android:textColor="@color/border_subtle"
+                android:textSize="10sp"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.1"/>
+
+            <!-- Gloss metallic animation view -->
+            <View
+                android:id="@+id/viewPaymentCardShine"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/shine_gradient"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:translationX="-250dp" />
+
+        </RelativeLayout>
+
+        <!-- Payment Instructions Label -->
+        <TextView
+            android:id="@+id/tvPaymentInstruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cardPaymentContainer"
+            android:layout_marginTop="36dp"
+            android:text="Verify credentials to arm emulation"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:letterSpacing="0.02"/>
+
+        <!-- Biometric Unlock Indicator Ring / Gesture feedback -->
+        <FrameLayout
+            android:id="@+id/layoutPaymentUnlockIndicator"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="110dp"
+            android:background="@drawable/scan_button_background"
+            android:backgroundTint="@color/bg_surface"
+            android:elevation="6dp">
+
+            <ImageView
+                android:id="@+id/imgPaymentFingerprint"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_scan"
+                android:layout_gravity="center"
+                app:tint="@color/accent_lime"/>
+        </FrameLayout>
+
+        <!-- Close overlay button -->
+        <Button
+            android:id="@+id/btnCancelPayment"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="35dp"
+            android:text="Cancel"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/bg_card"
+            android:textAllCaps="false"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp" />
+
+    </RelativeLayout>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- PAYMENT CARD REJECTED OVERLAY                                       -->
+    <!-- Elevation 30dp: sits above ALL other overlays.                      -->
+    <!-- The app NEVER stores/logs/processes any payment card data.           -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <RelativeLayout
+        android:id="@+id/layoutPaymentRejectedOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F509090C"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        android:elevation="30dp">
+
+        <!-- Soft amber ambient glow -->
+        <View
+            android:id="@+id/viewPaymentRejectedGlow"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shine_gradient"
+            android:backgroundTint="#44E65100"
+            android:alpha="0.6" />
+
+        <!-- Warning card container -->
+        <LinearLayout
+            android:id="@+id/cardPaymentRejected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="28dp"
+            android:layout_marginRight="28dp"
+            android:background="@drawable/glass_card_background"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="32dp"
+            android:elevation="8dp">
+
+            <!-- Lock/shield icon -->
+            <FrameLayout
+                android:id="@+id/layoutPaymentRejectedIcon"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:background="@drawable/scan_button_background"
+                android:backgroundTint="#1A0D00"
+                android:layout_marginBottom="24dp">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_scan"
+                    android:layout_gravity="center"
+                    app:tint="#E65100" />
+            </FrameLayout>
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvPaymentRejectedTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PAYMENT CARD DETECTED"
+                android:textColor="#E65100"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.18"
+                android:textAllCaps="true"
+                android:layout_marginBottom="14dp" />
+
+            <!-- Divider -->
+            <View
+                android:layout_width="48dp"
+                android:layout_height="1dp"
+                android:background="#33E65100"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Primary message -->
+            <TextView
+                android:id="@+id/tvPaymentRejectedMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This appears to be a payment card."
+                android:textColor="@color/text_primary"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginBottom="12dp"
+                android:lineSpacingMultiplier="1.3" />
+
+            <!-- Compliance explanation -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="For security and compliance reasons, payment cards cannot be imported or emulated."
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.5"
+                android:layout_marginBottom="32dp" />
+
+            <!-- Dismiss -->
+            <Button
+                android:id="@+id/btnPaymentRejectedDismiss"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Got It"
+                android:textColor="@color/text_primary"
+                android:backgroundTint="@color/bg_card"
+                android:textAllCaps="false"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- DEVICE NOT SUPPORTED OVERLAY                                       -->
+    <!-- Elevation 40dp: sits at absolute top to lock entire app when HCE/NFC is missing. -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <RelativeLayout
+        android:id="@+id/layoutUnsupportedOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_void"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        android:elevation="40dp">
+
+        <!-- Subtle ambient radial neon glow in the center -->
+        <View
+            android:id="@+id/viewUnsupportedGlow"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shine_gradient"
+            android:backgroundTint="#15FF453A"
+            android:alpha="0.75" />
+
+        <!-- Concentric Breathing Rings -->
+        <View
+            android:id="@+id/unsupportedRing3"
+            android:layout_width="260dp"
+            android:layout_height="260dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/scan_ring"
+            android:backgroundTint="#FF453A"
+            android:alpha="0.08" />
+
+        <View
+            android:id="@+id/unsupportedRing2"
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/scan_ring"
+            android:backgroundTint="#FF453A"
+            android:alpha="0.14" />
+
+        <View
+            android:id="@+id/unsupportedRing1"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/scan_ring"
+            android:backgroundTint="#FF453A"
+            android:alpha="0.22" />
+
+        <!-- Centerpiece lock icon inside a gorgeous luxury surface container -->
+        <FrameLayout
+            android:id="@+id/layoutUnsupportedCenter"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/glass_card_background"
+            android:backgroundTint="#1C1313"
+            android:elevation="8dp">
+
+            <ImageView
+                android:id="@+id/imgUnsupportedCenter"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:src="@drawable/ic_shield"
+                android:layout_gravity="center"
+                app:tint="#FF453A" />
+        </FrameLayout>
+
+        <!-- Message Panel -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"
+            android:paddingLeft="36dp"
+            android:paddingRight="36dp">
+
+            <!-- Premium Small Tag -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DEVICE INCOMPATIBLE"
+                android:textColor="#FF453A"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.2"
+                android:layout_marginBottom="18dp" />
+
+            <!-- Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NFC Wallet Unavailable"
+                android:textColor="@color/text_primary"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:letterSpacing="0.01"
+                android:layout_marginBottom="14dp" />
+
+            <!-- Elegant Consumer Explanation -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This device doesn't support NFC Wallet features.\n\nTo use tap-to-scan and secure card interactions, please use a compatible NFC-enabled Android device."
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.45"
+                android:layout_marginBottom="44dp" />
+
+            <!-- CTA Actions -->
+            <Button
+                android:id="@+id/btnUnsupportedLearnMore"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Learn More"
+                android:textColor="@color/bg_surface"
+                android:backgroundTint="@color/text_primary"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp" />
+
+            <Button
+                android:id="@+id/btnUnsupportedRetry"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Retry System Check"
+                android:textColor="@color/text_secondary"
+                android:backgroundTint="@color/bg_card"
+                android:textAllCaps="false"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- NFC DISABLED STATE OVERLAY                                          -->
+    <!-- Elevation 41dp: sits above everything to guide user to settings.     -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <RelativeLayout
+        android:id="@+id/layoutNfcDisabledOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_void"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        android:elevation="41dp">
+
+        <!-- Subtle warm electric lime glow in the center -->
+        <View
+            android:id="@+id/viewDisabledGlow"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shine_gradient"
+            android:backgroundTint="#15D9FF3F"
+            android:alpha="0.75" />
+
+        <!-- Concentric Breathing Lime Rings -->
+        <View
+            android:id="@+id/disabledRing3"
+            android:layout_width="260dp"
+            android:layout_height="260dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/scan_ring"
+            android:backgroundTint="@color/accent_lime"
+            android:alpha="0.08" />
+
+        <View
+            android:id="@+id/disabledRing2"
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/scan_ring"
+            android:backgroundTint="@color/accent_lime"
+            android:alpha="0.14" />
+
+        <View
+            android:id="@+id/disabledRing1"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/scan_ring"
+            android:backgroundTint="@color/accent_lime"
+            android:alpha="0.22" />
+
+        <!-- NFC wave centerpiece icon inside premium container -->
+        <FrameLayout
+            android:id="@+id/layoutDisabledCenter"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/glass_card_background"
+            android:backgroundTint="#171C13"
+            android:elevation="8dp">
+
+            <ImageView
+                android:id="@+id/imgDisabledCenter"
+                android:layout_width="36dp"
+                android:layout_height="38dp"
+                android:src="@drawable/ic_nfc_wave"
+                android:layout_gravity="center"
+                app:tint="@color/accent_lime" />
+        </FrameLayout>
+
+        <!-- Message Panel -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"
+            android:paddingLeft="36dp"
+            android:paddingRight="36dp">
+
+            <!-- Premium Small Active Tag -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NFC IS INACTIVE"
+                android:textColor="@color/accent_lime"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.2"
+                android:layout_marginBottom="18dp" />
+
+            <!-- Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enable NFC to continue"
+                android:textColor="@color/text_primary"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:letterSpacing="0.01"
+                android:layout_marginBottom="14dp" />
+
+            <!-- Consumer Message -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NFC is turned off.\n\nPlease enable NFC in system settings to unlock tap-to-scan, digital emulation, and wallet features."
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.45"
+                android:layout_marginBottom="44dp" />
+
+            <!-- CTA Actions -->
+            <Button
+                android:id="@+id/btnDisabledEnableNfc"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Open NFC Settings"
+                android:textColor="@color/bg_surface"
+                android:backgroundTint="@color/accent_lime"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp" />
+
+            <Button
+                android:id="@+id/btnDisabledRetry"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Retry Check"
+                android:textColor="@color/text_secondary"
+                android:backgroundTint="@color/bg_card"
+                android:textAllCaps="false"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>
+
