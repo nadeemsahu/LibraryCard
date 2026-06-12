@@ -20,14 +20,6 @@ This module offers emulation of a contactless library ID card. Emulation uses na
 
 [See the list of supported commands.](nfc/src/main/java/com/piotrekwitkowski/nfc/desfire/Commands.java)
 
-### LibraryReader
-This module enables reading data from physical and emulated DESFire-based library ID cards.
-
-Its programmed use-case is to:
-1. connect with a DESFire card (physical or with a specific Android application)
-2. select a library DESFire Application
-3. authenticate with AES key
-4. read data from a DESFire File
 
 ## Configuration
 
@@ -37,8 +29,6 @@ The "Android" AID used by both HCE and Reader Android applications can be config
 ### Emulated library ID
 The data (Application AID, AES key, Data Files) of the emulated DESFire Application can be configured within the HCE application module logic.
 
-### Library ID reader
-The data (Application AID and AES key) of the Reader module can be configured in `LibraryReader.java`.
 
 ## Deployment
 To deploy the applications, two NFC-capable Android phones are needed. Originally tested with a Motorola One (Emulator) and Nexus 4 (Reader). You can use [CTSVerifier](https://source.android.com/compatibility/cts/verifier) to test your phone's NFC capabilities.
