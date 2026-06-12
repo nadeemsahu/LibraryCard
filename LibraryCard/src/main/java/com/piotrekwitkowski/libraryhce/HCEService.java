@@ -11,22 +11,31 @@ import com.piotrekwitkowski.nfc.se.Application;
 import com.piotrekwitkowski.nfc.se.Emulation;
 import com.piotrekwitkowski.nfc.desfire.InvalidParameterException;
 import com.piotrekwitkowski.libraryhce.application.DynamicLibraryApplication;
+import com.piotrekwitkowski.libraryhce.domain.PaymentStateRepository;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class HCEService extends HostApduService {
     private static final String TAG = "HCEService";
     private boolean firstInteraction = true;
     private Emulation emulation;
     private final NotificationService notifications = new NotificationService(this);
 
+    @Inject
+    PaymentStateRepository paymentStateRepository;
+
     @Override
     public byte[] processCommandApdu(byte[] command, Bundle extras) {
-        if (!PaymentAuthState.isAuthorized()) {
+        if (!paymentStateRepository.isAuthorized().getValue()) {
             Log.i(TAG, "APDU Rejected: Emulation requires biometric authentication.");
             return new byte[] { (byte) 0x6A, (byte) 0x82 }; // File not found / Blocked
         }
 
         // Trigger real-time UI response on front-end
-        PaymentAuthState.notifyInteraction();
+        paymentStateRepository.notifyInteraction();
 
         byte[] response = firstInteraction ? getFirstResponse(command) : getNextResponse(command);
         Log.i(TAG, "--> " + ByteUtils.toHexString(response));

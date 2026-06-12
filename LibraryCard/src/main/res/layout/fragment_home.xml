@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+        <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/layout_home"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- Header Title: Editorial and Minimal -->
+                <LinearLayout
+                    android:id="@+id/layoutHomeHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="35dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="membership credentials"
+                            android:textColor="@color/text_muted"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:letterSpacing="0.15"
+                            android:textAllCaps="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="library card"
+                            android:textColor="@color/text_primary"
+                            android:textSize="26sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="4dp"
+                            android:letterSpacing="0.01"/>
+                    </LinearLayout>
+
+                    <!-- Muted Elegant Status Dot -->
+                    <View
+                        android:id="@+id/viewHcePulseDot"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:background="@drawable/button_accent_gradient"
+                        android:backgroundTint="@color/accent_lime"
+                        android:layout_marginRight="6dp" />
+                </LinearLayout>
+
+                <!-- HERO CARD: Premium Graphite Card Showcase -->
+                <RelativeLayout
+                    android:id="@+id/cardActiveHero"
+                    android:layout_width="match_parent"
+                    android:layout_height="215dp"
+                    android:background="@drawable/luxury_card_gradient"
+                    android:padding="24dp"
+                    android:elevation="12dp"
+                    android:layout_marginBottom="35dp">
+
+                    <!-- Top Labels -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="LIBRARY MEMBER"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.2" />
+
+                    <TextView
+                        android:id="@+id/tvCardStatusLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="READY"
+                        android:textColor="@color/accent_lime"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1" />
+
+                    <!-- Chip and Contactless Graphics -->
+                    <ImageView
+                        android:id="@+id/imgChip"
+                        android:layout_width="45dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_chip"
+                        android:layout_marginTop="38dp" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_nfc_wave"
+                        android:layout_toRightOf="@id/imgChip"
+                        android:layout_alignTop="@id/imgChip"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="6dp"
+                        app:tint="@color/text_muted" />
+
+                    <!-- Monospaced Library ID representation -->
+                    <TextView
+                        android:id="@+id/tvHeroCardId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="HUHS 0585 6860"
+                        android:textColor="@color/text_primary"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:fontFamily="monospace"
+                        android:layout_above="@id/tvHeroCardName"
+                        android:layout_marginBottom="12dp"
+                        android:letterSpacing="0.05" />
+
+                    <!-- Cardholder Name -->
+                    <TextView
+                        android:id="@+id/tvHeroCardName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MEMBER CARD"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="5dp"
+                        android:letterSpacing="0.1" />
+
+                    <TextView
+                        android:id="@+id/tvCardSystemCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="5dp"
+                        android:text="SECURE"
+                        android:textColor="@color/border_subtle"
+                        android:textSize="10sp"
+                        android:fontFamily="monospace"
+                        android:letterSpacing="0.1"/>
+
+                    <!-- Shiny reflection overlay -->
+                    <View
+                        android:id="@+id/viewCardShine"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shine_gradient"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:translationX="-200dp" />
+                </RelativeLayout>
+
+                <!-- Saved Cards Section Header -->
+                <TextView
+                    android:id="@+id/tvSwapperTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="your collection"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.15"
+                    android:textAllCaps="true"
+                    android:layout_marginBottom="16dp"/>
+
+                <HorizontalScrollView
+                    android:id="@+id/scrollSwapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none"
+                    android:layout_marginBottom="25dp">
+
+                    <LinearLayout
+                        android:id="@+id/layoutCardSwapper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8dp">
+                        <!-- Preview items generated dynamically -->
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <!-- Compatibility container holds hidden hardware dump tags to preserve code-binding safety -->
+                <LinearLayout
+                    android:id="@+id/layoutStatusCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/tvHomeNfcStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""/>
+                    <Button
+                        android:id="@+id/btnHomeEnableNfc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutTapGuideCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+        </ScrollView>

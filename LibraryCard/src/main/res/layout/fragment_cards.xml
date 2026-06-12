@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+        <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/layout_cards"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="cards"
+                    android:textColor="@color/text_primary"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="30dp"
+                    android:letterSpacing="0.01" />
+
+                <!-- Vertical Cards profiles layout -->
+                <LinearLayout
+                    android:id="@+id/layoutVerticalCards"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="16dp">
+                    <!-- Dynamic Profile Card tiles inserted here -->
+                </LinearLayout>
+
+                <!-- Empty state: shown when no cards exist -->
+                <LinearLayout
+                    android:id="@+id/layoutEmptyState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/glass_card_background"
+                    android:padding="40dp"
+                    android:layout_marginBottom="35dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="no cards yet"
+                        android:textColor="@color/text_primary"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_marginBottom="12dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="tap the scan button below to hold your physical library card against your phone and import your credentials"
+                        android:textColor="@color/text_muted"
+                        android:textSize="13sp"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.4"
+                        android:layout_marginBottom="28dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="↓  tap scan"
+                        android:textColor="@color/accent_lime"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.2"
+                        android:textAllCaps="true"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
