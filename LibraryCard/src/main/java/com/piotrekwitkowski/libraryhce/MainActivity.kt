@@ -216,40 +216,58 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
         val ring2 = findViewById<View>(R.id.pulseRing2) ?: return
         val ring3 = findViewById<View>(R.id.pulseRing3) ?: return
 
-        fun pulseAnimator(view: View, durationMs: Long, startDelayMs: Long): AnimatorSet {
-            val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.85f, 1.1f, 0.85f)
-            val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0.85f, 1.1f, 0.85f)
-            val alpha  = ObjectAnimator.ofFloat(view, "alpha",  view.alpha, view.alpha * 0.5f, view.alpha)
-            return AnimatorSet().apply {
-                playTogether(scaleX, scaleY, alpha)
-                duration = durationMs
-                this.startDelay = startDelayMs
-                interpolator = AccelerateDecelerateInterpolator()
-                repeatCount = ObjectAnimator.INFINITE  // applied to children below
-                scaleX.repeatCount = ObjectAnimator.INFINITE
-                scaleY.repeatCount = ObjectAnimator.INFINITE
-                alpha.repeatCount  = ObjectAnimator.INFINITE
+        // AnimatorSet does NOT support repeatCount — it must be set on each ObjectAnimator directly.
+        // Each ring's animators are started independently so the repeat actually fires.
+        fun startPulse(view: View, durationMs: Long, startDelayMs: Long) {
+            val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.85f, 1.1f, 0.85f).apply {
+                this.duration    = durationMs
+                this.startDelay  = startDelayMs
+                repeatCount      = ObjectAnimator.INFINITE
+                repeatMode       = ObjectAnimator.RESTART
+                interpolator     = AccelerateDecelerateInterpolator()
             }
+            val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0.85f, 1.1f, 0.85f).apply {
+                this.duration    = durationMs
+                this.startDelay  = startDelayMs
+                repeatCount      = ObjectAnimator.INFINITE
+                repeatMode       = ObjectAnimator.RESTART
+                interpolator     = AccelerateDecelerateInterpolator()
+            }
+            val alpha = ObjectAnimator.ofFloat(view, "alpha", view.alpha, view.alpha * 0.4f, view.alpha).apply {
+                this.duration    = durationMs
+                this.startDelay  = startDelayMs
+                repeatCount      = ObjectAnimator.INFINITE
+                repeatMode       = ObjectAnimator.RESTART
+                interpolator     = AccelerateDecelerateInterpolator()
+            }
+            scaleX.start()
+            scaleY.start()
+            alpha.start()
         }
 
-        val a1 = pulseAnimator(ring1, 1800, 0)
-        val a2 = pulseAnimator(ring2, 1800, 300)
-        val a3 = pulseAnimator(ring3, 1800, 600)
+        startPulse(ring1, 1800, 0)
+        startPulse(ring2, 1800, 300)
+        startPulse(ring3, 1800, 600)
 
-        scanPulseAnimator = AnimatorSet().apply {
-            playTogether(a1, a2, a3)
-            start()
-        }
+        // Keep a single sentinel animator so stopScanPulseAnimation() can cancel all via tag
+        scanPulseAnimator = AnimatorSet() // used only as a cancellation token; real animators are on the views
     }
 
     private fun stopScanPulseAnimation() {
         scanPulseAnimator?.cancel()
         scanPulseAnimator = null
-        // Reset ring scale/alpha to their XML defaults so they look right next time
+        // Cancel property animators running directly on each ring view and reset to XML defaults
         listOf(R.id.pulseRing1, R.id.pulseRing2, R.id.pulseRing3).forEach { id ->
             val ring = findViewById<View>(id) ?: return@forEach
+            ring.animate().cancel()
             ring.scaleX = 1f
             ring.scaleY = 1f
+            // Restore original alpha values set in XML (ring1=0.5, ring2=0.3, ring3=0.2)
+            ring.alpha = when (id) {
+                R.id.pulseRing1 -> 0.5f
+                R.id.pulseRing2 -> 0.3f
+                else            -> 0.2f
+            }
         }
     }
 
