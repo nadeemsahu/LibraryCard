@@ -2,10 +2,12 @@ package com.piotrekwitkowski.libraryhce
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -79,11 +81,18 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
         bindViews()
         setupNavigation()
         observeViewModel()
+        checkDeviceCapabilities()
 
         // Load default fragment
         if (savedInstanceState == null) {
             switchFragment(HomeFragment(), navHome)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Re-check every time the user returns (e.g. after enabling NFC in Settings)
+        checkDeviceCapabilities()
     }
 
     private fun bindViews() {
@@ -114,9 +123,36 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
             appViewModel.setPaymentEmulationActive(false)
         }
 
-        // Fix: wire the payment-rejected overlay dismiss button (was never connected)
+        // Payment-rejected overlay dismiss
         findViewById<View>(R.id.btnPaymentRejectedDismiss)?.setOnClickListener {
             findViewById<View>(R.id.layoutPaymentRejectedOverlay)?.visibility = View.GONE
+        }
+
+        // BUG-001 FIX: wire the four previously-dead error overlay buttons
+
+        // Unsupported device overlay
+        findViewById<View>(R.id.btnUnsupportedLearnMore)?.setOnClickListener {
+            AlertDialog.Builder(this, R.style.CustomDialogTheme)
+                .setTitle("NFC Wallet Unavailable")
+                .setMessage(
+                    "This app requires an Android device with NFC and Host Card Emulation (HCE) support.\n\n" +
+                    "• NFC lets you scan physical library cards.\n" +
+                    "• HCE lets your phone emulate a card at readers.\n\n" +
+                    "Please use a compatible NFC-enabled Android device to access all features."
+                )
+                .setPositiveButton("Got It", null)
+                .show()
+        }
+        findViewById<View>(R.id.btnUnsupportedRetry)?.setOnClickListener {
+            checkDeviceCapabilities()
+        }
+
+        // NFC disabled overlay
+        findViewById<View>(R.id.btnDisabledEnableNfc)?.setOnClickListener {
+            startActivity(Intent(Settings.ACTION_NFC_SETTINGS))
+        }
+        findViewById<View>(R.id.btnDisabledRetry)?.setOnClickListener {
+            checkDeviceCapabilities()
         }
     }
 
@@ -366,6 +402,31 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
     override fun onPause() {
         super.onPause()
         try { nfcAdapter?.disableReaderMode(this) } catch (e: Exception) {}
+    }
+
+    // BUG-002 FIX: run device capability check and show the correct blocking overlay.
+    // Called from onCreate + onResume so the overlay auto-dismisses after the user
+    // enables NFC in Settings and returns to the app.
+    private fun checkDeviceCapabilities() {
+        val audit = DeviceCapabilityManager.auditDevice(this)
+
+        when {
+            !audit.isWalletFullySupported -> {
+                // Device has no NFC hardware or no HCE support — permanently incompatible
+                layoutNfcDisabledOverlay.visibility = View.GONE
+                layoutUnsupportedOverlay.visibility = View.VISIBLE
+            }
+            !audit.isNfcEnabled -> {
+                // Hardware present but NFC is currently turned off
+                layoutUnsupportedOverlay.visibility = View.GONE
+                layoutNfcDisabledOverlay.visibility = View.VISIBLE
+            }
+            else -> {
+                // All good — hide both gatekeeping overlays
+                layoutUnsupportedOverlay.visibility = View.GONE
+                layoutNfcDisabledOverlay.visibility = View.GONE
+            }
+        }
     }
 
     private val nfcAdapter: NfcAdapter? by lazy { NfcAdapter.getDefaultAdapter(this) }

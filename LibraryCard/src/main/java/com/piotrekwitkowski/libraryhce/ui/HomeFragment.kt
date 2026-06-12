@@ -1,12 +1,10 @@
 package com.piotrekwitkowski.libraryhce.ui
 
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -14,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.piotrekwitkowski.libraryhce.AppViewModel
-import com.piotrekwitkowski.libraryhce.DeviceCapabilityManager
 import com.piotrekwitkowski.libraryhce.R
 import kotlinx.coroutines.launch
 
@@ -25,8 +22,6 @@ class HomeFragment : Fragment() {
     private lateinit var tvHeroCardName: TextView
     private lateinit var tvCardStatusLabel: TextView
     private lateinit var viewHcePulseDot: View
-    private lateinit var tvHomeNfcStatus: TextView
-    private lateinit var btnHomeEnableNfc: Button
     private lateinit var layoutCardSwapper: LinearLayout
     private lateinit var cardActiveHero: View
 
@@ -36,13 +31,11 @@ class HomeFragment : Fragment() {
     ): View? {
         appViewModel = ViewModelProvider(requireActivity())[AppViewModel::class.java]
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        
+
         tvHeroCardId = view.findViewById(R.id.tvHeroCardId)
         tvHeroCardName = view.findViewById(R.id.tvHeroCardName)
         tvCardStatusLabel = view.findViewById(R.id.tvCardStatusLabel)
         viewHcePulseDot = view.findViewById(R.id.viewHcePulseDot)
-        tvHomeNfcStatus = view.findViewById(R.id.tvHomeNfcStatus)
-        btnHomeEnableNfc = view.findViewById(R.id.btnHomeEnableNfc)
         layoutCardSwapper = view.findViewById(R.id.layoutCardSwapper)
         cardActiveHero = view.findViewById(R.id.cardActiveHero)
 
@@ -53,17 +46,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        btnHomeEnableNfc.setOnClickListener {
-            val intent = Intent(android.provider.Settings.ACTION_NFC_SETTINGS)
-            startActivity(intent)
-        }
-
         tvHeroCardId.setOnClickListener {
             it.performHapticFeedback(android.view.HapticFeedbackConstants.KEYBOARD_TAP)
             val current = appViewModel.isUidRevealed.value
             if (!current) {
-                // In a real refactor, we would trigger biometric auth here
-                // For now, we'll just reveal
                 appViewModel.setUidRevealed(true)
             } else {
                 appViewModel.setUidRevealed(false)
@@ -105,10 +91,9 @@ class HomeFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            appViewModel.isUidRevealed.collect { revealed ->
-                // Force re-emit of active profile to update UI
-                val current = appViewModel.activeProfile.value
-                appViewModel.refreshProfiles() // Lazy way to trigger re-render
+            appViewModel.isUidRevealed.collect { _ ->
+                // Re-trigger profile observer so card ID masking updates immediately
+                appViewModel.refreshProfiles()
             }
         }
 
@@ -143,24 +128,6 @@ class HomeFragment : Fragment() {
                     layoutCardSwapper.addView(cardView)
                 }
             }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        checkNfcStatus()
-    }
-
-    private fun checkNfcStatus() {
-        val audit = DeviceCapabilityManager.auditDevice(requireContext())
-        if (!audit.isWalletFullySupported || !audit.isNfcEnabled) {
-            tvHomeNfcStatus.text = "NFC is Disabled or Unsupported"
-            tvHomeNfcStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.state_error))
-            btnHomeEnableNfc.visibility = View.VISIBLE
-        } else {
-            tvHomeNfcStatus.text = "NFC hardware: Active & Emulating"
-            tvHomeNfcStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.state_success))
-            btnHomeEnableNfc.visibility = View.GONE
         }
     }
 }

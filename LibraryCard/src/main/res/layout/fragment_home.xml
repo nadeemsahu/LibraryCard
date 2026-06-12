@@ -191,31 +191,6 @@
                     </LinearLayout>
                 </HorizontalScrollView>
 
-                <!-- Compatibility container holds hidden hardware dump tags to preserve code-binding safety -->
-                <LinearLayout
-                    android:id="@+id/layoutStatusCard"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-                    <TextView
-                        android:id="@+id/tvHomeNfcStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""/>
-                    <Button
-                        android:id="@+id/btnHomeEnableNfc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layoutTapGuideCard"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone"/>
 
             </LinearLayout>
         </ScrollView>
