@@ -3,11 +3,8 @@ package com.piotrekwitkowski.libraryhce
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -26,9 +23,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _isUidRevealed = MutableStateFlow(false)
     val isUidRevealed: StateFlow<Boolean> = _isUidRevealed.asStateFlow()
-
-    private val _apduInteractionEvent = MutableSharedFlow<Unit>()
-    val apduInteractionEvent: SharedFlow<Unit> = _apduInteractionEvent.asSharedFlow()
 
     init {
         refreshProfiles()
@@ -60,11 +54,5 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     fun deleteProfile(name: String) {
         ProfileManager.deleteProfile(getApplication(), name)
         refreshProfiles()
-    }
-
-    fun notifyApduInteraction() {
-        viewModelScope.launch {
-            _apduInteractionEvent.emit(Unit)
-        }
     }
 }

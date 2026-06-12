@@ -3,7 +3,6 @@ package com.piotrekwitkowski.libraryhce.ui
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
@@ -58,19 +57,20 @@ class HomeFragment : Fragment() {
         setupListeners()
         observeViewModel()
 
-        // Defer shimmer start until the card is laid out (we need its measured width)
-        cardActiveHero.post { startHeroCardShimmer() }
+        // CR-007/CR-009 FIX: Do NOT start shimmer here. onResume() always fires after
+        // onCreateView, so shimmer is started exclusively there. Starting it in both
+        // places causes two Handlers to be queued on the first attach cycle.
 
         return view
     }
 
     // ─── Hero card shimmer ────────────────────────────────────────────────────
-    // Pattern: hide → reset → sweep across → hide → wait 4–6s → repeat
-    // Uses a single ObjectAnimator recycled on each cycle, avoiding accumulation.
+    // Pattern: invisible → sweep left→right → invisible → wait 4.5s → repeat
+    // One ObjectAnimator per cycle. No accumulation possible.
 
     private fun startHeroCardShimmer() {
         stopHeroCardShimmer()
-        scheduleShineSweep(initialDelayMs = 800)   // first sweep after 800ms so card settles
+        scheduleShineSweep(initialDelayMs = 800) // first sweep after card settles
     }
 
     private fun scheduleShineSweep(initialDelayMs: Long) {
@@ -80,53 +80,49 @@ class HomeFragment : Fragment() {
     }
 
     private fun runShineSweep() {
-        val card = cardActiveHero
+        val card  = cardActiveHero
         val shine = viewCardShine
 
-        // Card width is known after layout; shine is 120dp wide, starts off-screen left
         val cardWidth = card.width.toFloat()
         if (cardWidth <= 0f) {
-            // View not yet measured — retry after next frame
             scheduleShineSweep(200)
             return
         }
         val shineWidth = shine.width.toFloat()
-        val startX = -shineWidth          // fully off the left edge
-        val endX   = cardWidth + shineWidth // fully off the right edge
+        val startX = -shineWidth
+        val endX   = cardWidth + shineWidth
 
-        // Fade in, sweep, fade out — all handled by a translationX animator with
-        // alpha keyframed via the fraction so there's no abrupt reset flash.
-        val animator = ObjectAnimator.ofFloat(shine, "translationX", startX, endX).apply {
-            duration    = 1800
+        val translator = ObjectAnimator.ofFloat(shine, "translationX", startX, endX).apply {
+            duration     = 1800
             interpolator = DecelerateInterpolator(1.5f)
-            // Alpha is driven by a ValueAnimator listener so it's in sync with translation
         }
-
-        // Separate alpha animator — ramp up/hold/ramp down over the same duration
-        val alphaAnimator = ObjectAnimator.ofFloat(shine, "alpha", 0f, 1f, 1f, 0f).apply {
-            duration    = 1800
+        val alphaAnim = ObjectAnimator.ofFloat(shine, "alpha", 0f, 1f, 1f, 0f).apply {
+            duration     = 1800
             interpolator = AccelerateDecelerateInterpolator()
         }
 
-        animator.addListener(object : AnimatorListenerAdapter() {
+        translator.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationStart(animation: Animator) {
                 shine.alpha = 0f
             }
             override fun onAnimationEnd(animation: Animator) {
                 shine.alpha = 0f
-                alphaAnimator.cancel()
-                // Schedule the next sweep after a 4–5s pause
+                alphaAnim.cancel()
+                // CR-002 FIX: only re-schedule if the fragment is still alive.
+                // onAnimationCancel fires when stopHeroCardShimmer() is called during
+                // teardown — must NOT re-schedule from there.
                 scheduleShineSweep(initialDelayMs = 4500)
             }
             override fun onAnimationCancel(animation: Animator) {
                 shine.alpha = 0f
-                alphaAnimator.cancel()
+                alphaAnim.cancel()
+                // Intentionally do NOT re-schedule here. Cancel means we are stopping.
             }
         })
 
-        shineAnimator = animator
-        alphaAnimator.start()
-        animator.start()
+        shineAnimator = translator
+        alphaAnim.start()
+        translator.start()
     }
 
     private fun stopHeroCardShimmer() {
@@ -146,9 +142,13 @@ class HomeFragment : Fragment() {
             appViewModel.setUidRevealed(!appViewModel.isUidRevealed.value)
         }
 
-        // Hero card tap — micro-interaction: scale down on press, spring back on release
+        // Hero card tap micro-interaction: press = scale down, release = spring back → action
         cardActiveHero.setOnTouchListener { v, event ->
-            when (event.action) {
+            // CR-003 FIX: capture action before animation starts. MotionEvent objects
+            // are recycled by the framework; reading event.action inside withEndAction
+            // (which fires 180ms later) returns an undefined/recycled value.
+            val actionType = event.action
+            when (actionType) {
                 MotionEvent.ACTION_DOWN -> {
                     v.animate()
                         .scaleX(0.97f).scaleY(0.97f)
@@ -162,7 +162,7 @@ class HomeFragment : Fragment() {
                         .setDuration(180)
                         .setInterpolator(AccelerateDecelerateInterpolator())
                         .withEndAction {
-                            if (event.action == MotionEvent.ACTION_UP) {
+                            if (actionType == MotionEvent.ACTION_UP) {
                                 v.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
                                 appViewModel.setPaymentEmulationActive(true)
                             }
@@ -170,7 +170,7 @@ class HomeFragment : Fragment() {
                         .start()
                 }
             }
-            true  // consume — OnClickListener replaced by touch for micro-interaction
+            true
         }
     }
 
@@ -217,8 +217,8 @@ class HomeFragment : Fragment() {
                 for (p in profiles) {
                     val cardView = layoutInflater.inflate(
                         R.layout.item_horizontal_card, layoutCardSwapper, false)
-                    val tvMiniName    = cardView.findViewById<TextView>(R.id.tvMiniName)
-                    val tvMiniId      = cardView.findViewById<TextView>(R.id.tvMiniId)
+                    val tvMiniName     = cardView.findViewById<TextView>(R.id.tvMiniName)
+                    val tvMiniId       = cardView.findViewById<TextView>(R.id.tvMiniId)
                     val borderSelected = cardView.findViewById<View>(R.id.borderSelected)
 
                     tvMiniName.text = p.name
@@ -229,13 +229,14 @@ class HomeFragment : Fragment() {
                             View.VISIBLE else View.GONE
 
                     // Mini card tap micro-interaction
-                    cardView.setOnTouchListener { v, event ->
-                        when (event.action) {
+                    cardView.setOnTouchListener { v, ev ->
+                        val action = ev.action
+                        when (action) {
                             MotionEvent.ACTION_DOWN ->
                                 v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(80).start()
                             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                                 v.animate().scaleX(1f).scaleY(1f).setDuration(150).start()
-                                if (event.action == MotionEvent.ACTION_UP) {
+                                if (action == MotionEvent.ACTION_UP) {
                                     v.performHapticFeedback(android.view.HapticFeedbackConstants.KEYBOARD_TAP)
                                     appViewModel.setActiveProfile(p.name)
                                 }
@@ -249,10 +250,12 @@ class HomeFragment : Fragment() {
         }
     }
 
-    // ─── Lifecycle cleanup ────────────────────────────────────────────────────
+    // ─── Lifecycle ────────────────────────────────────────────────────────────
 
     override fun onResume() {
         super.onResume()
+        // CR-007/CR-009 FIX: shimmer is started exclusively here.
+        // Views are guaranteed initialized by the time onResume fires.
         if (::cardActiveHero.isInitialized) {
             cardActiveHero.post { startHeroCardShimmer() }
         }

@@ -287,6 +287,10 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
                     triggerBiometricAuthentication()
                 } else {
                     stopPaymentCardShimmer()
+                    // CR-010 FIX: cancel any in-flight animator on the overlay before
+                    // starting a new one. Rapid toggle causes withEndAction{GONE} from
+                    // a previous fade-out to fire during the next fade-in cycle.
+                    layoutPaymentOverlay.animate().cancel()
                     layoutPaymentOverlay.animate()
                         .alpha(0f)
                         .setDuration(180)
@@ -458,9 +462,15 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
             builder.setPositiveButton("Save") { _, _ ->
                 val name = if (input.text.toString().trim().isEmpty()) "Cloned Card ($libraryId)" else input.text.toString().trim()
                 val profile = ProfileManager.CardProfile(name, libraryId, hexDump, "00000000000000000000000000000000")
-                ProfileManager.addProfile(this, profile)
-                appViewModel.refreshProfiles()
-                Toast.makeText(this, "Card saved", Toast.LENGTH_SHORT).show()
+                // CR-005 FIX: ProfileManager.addProfile() returns false for duplicate names.
+                // Previously the return value was ignored, showing "Card saved" even on failure.
+                val saved = ProfileManager.addProfile(this, profile)
+                if (saved) {
+                    appViewModel.refreshProfiles()
+                    Toast.makeText(this, "Card saved", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "A card with that name already exists", Toast.LENGTH_LONG).show()
+                }
             }
             builder.setNegativeButton("Discard", null)
             builder.show()
@@ -476,7 +486,10 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
 
     override fun onPause() {
         super.onPause()
-        try { nfcAdapter?.disableReaderMode(this) } catch (e: Exception) {}
+        // CR-008 FIX: delegate exclusively to nfcSessionManager which has its own null/error
+        // guard. Previously we also called nfcAdapter?.disableReaderMode(this) directly,
+        // creating two redundant teardown paths, one of which was unguarded.
+        nfcSessionManager.disableReaderMode()
     }
 
     override fun onDestroy() {
@@ -528,11 +541,18 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
             override fun onAnimationEnd(animation: android.animation.Animator) {
                 shine.alpha = 0f
                 alphaAnim.cancel()
-                schedulePaymentShineSweep(initialDelayMs = 2500)
+                // CR-004 FIX: only re-schedule the next sweep if the payment overlay is
+                // still visible. If the overlay was dismissed while the animation was
+                // running, onAnimationEnd still fires — without this guard it would
+                // re-queue a sweep on an invisible / detached view.
+                if (layoutPaymentOverlay.visibility == View.VISIBLE) {
+                    schedulePaymentShineSweep(initialDelayMs = 2500)
+                }
             }
             override fun onAnimationCancel(animation: android.animation.Animator) {
                 shine.alpha = 0f
                 alphaAnim.cancel()
+                // Intentionally do NOT re-schedule. Cancel means we are stopping.
             }
         })
 
