@@ -57,7 +57,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="version: 2.2 (exclusive membership edition)"
+                        android:text="version: 1.0 (exclusive membership edition)"
                         android:textColor="@color/text_secondary"
                         android:textSize="13sp"
                         android:layout_marginTop="6dp" />
