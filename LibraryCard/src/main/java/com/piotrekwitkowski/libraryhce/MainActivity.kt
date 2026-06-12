@@ -7,10 +7,15 @@ import android.content.res.ColorStateList
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -69,6 +74,11 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
 
     // Scan pulse animation
     private var scanPulseAnimator: AnimatorSet? = null
+
+    // Payment card shimmer — ObjectAnimator + Handler for inter-sweep pause
+    private var paymentShineAnimator: ObjectAnimator? = null
+    private val paymentShineHandler = Handler(Looper.getMainLooper())
+    private var paymentShineRunnable: Runnable? = null
 
     private var lastScanTime = 0L
 
@@ -157,13 +167,42 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
     }
 
     private fun setupNavigation() {
-        navHome.setOnClickListener { switchFragment(HomeFragment(), navHome) }
-        navCards.setOnClickListener { switchFragment(CardsFragment(), navCards) }
-        navSettings.setOnClickListener { switchFragment(SettingsFragment(), navSettings) }
+        // Nav tap micro-interaction: quick scale down + spring back
+        fun navTap(view: View, action: () -> Unit) {
+            view.setOnTouchListener { v, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN ->
+                        v.animate().scaleX(0.88f).scaleY(0.88f).setDuration(80)
+                            .setInterpolator(DecelerateInterpolator()).start()
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                        v.animate().scaleX(1f).scaleY(1f).setDuration(200)
+                            .setInterpolator(OvershootInterpolator(2f)).start()
+                        if (event.action == MotionEvent.ACTION_UP) action()
+                    }
+                }
+                true
+            }
+        }
 
-        navScan.setOnClickListener {
-            it.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
-            appViewModel.setClonerActive(!appViewModel.isClonerActive.value)
+        navTap(navHome)     { switchFragment(HomeFragment(), navHome) }
+        navTap(navCards)    { switchFragment(CardsFragment(), navCards) }
+        navTap(navSettings) { switchFragment(SettingsFragment(), navSettings) }
+
+        navScan.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN ->
+                    v.animate().scaleX(0.88f).scaleY(0.88f).setDuration(80)
+                        .setInterpolator(DecelerateInterpolator()).start()
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    v.animate().scaleX(1f).scaleY(1f).setDuration(200)
+                        .setInterpolator(OvershootInterpolator(2f)).start()
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        v.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
+                        appViewModel.setClonerActive(!appViewModel.isClonerActive.value)
+                    }
+                }
+            }
+            true
         }
     }
 
@@ -192,13 +231,25 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
             appViewModel.isClonerActive.collect { isActive ->
                 updateScanButtonUi(isActive)
                 if (isActive) {
+                    // Animate scan overlay in: alpha fade
+                    layoutScanOverlay.alpha = 0f
                     layoutScanOverlay.visibility = View.VISIBLE
+                    layoutScanOverlay.animate()
+                        .alpha(1f)
+                        .setDuration(250)
+                        .setInterpolator(DecelerateInterpolator())
+                        .start()
                     startScanPulseAnimation()
                     if (nfcSessionManager.isNfcEnabled) {
                         nfcSessionManager.enableReaderMode(this@MainActivity)
                     }
                 } else {
-                    layoutScanOverlay.visibility = View.GONE
+                    layoutScanOverlay.animate()
+                        .alpha(0f)
+                        .setDuration(180)
+                        .setInterpolator(AccelerateDecelerateInterpolator())
+                        .withEndAction { layoutScanOverlay.visibility = View.GONE }
+                        .start()
                     stopScanPulseAnimation()
                     nfcSessionManager.disableReaderMode()
                 }
@@ -214,10 +265,34 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
                         appViewModel.setPaymentEmulationActive(false)
                         return@collect
                     }
+                    // Slide payment card up from below, then sweep shine
+                    val paymentCard = findViewById<View>(R.id.cardPaymentContainer)
+                    paymentCard?.translationY = 80f
+                    paymentCard?.alpha = 0f
+                    layoutPaymentOverlay.alpha = 0f
                     layoutPaymentOverlay.visibility = View.VISIBLE
+                    layoutPaymentOverlay.animate()
+                        .alpha(1f)
+                        .setDuration(220)
+                        .setInterpolator(DecelerateInterpolator())
+                        .start()
+                    paymentCard?.animate()
+                        ?.translationY(0f)
+                        ?.alpha(1f)
+                        ?.setDuration(420)
+                        ?.setStartDelay(60)
+                        ?.setInterpolator(OvershootInterpolator(1.2f))
+                        ?.withEndAction { startPaymentCardShimmer() }
+                        ?.start()
                     triggerBiometricAuthentication()
                 } else {
-                    layoutPaymentOverlay.visibility = View.GONE
+                    stopPaymentCardShimmer()
+                    layoutPaymentOverlay.animate()
+                        .alpha(0f)
+                        .setDuration(180)
+                        .setInterpolator(AccelerateDecelerateInterpolator())
+                        .withEndAction { layoutPaymentOverlay.visibility = View.GONE }
+                        .start()
                     paymentStateRepository.setAuthorized(false, null)
                 }
             }
@@ -402,6 +477,76 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
     override fun onPause() {
         super.onPause()
         try { nfcAdapter?.disableReaderMode(this) } catch (e: Exception) {}
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Cancel all animators to prevent memory leaks when Activity is destroyed
+        stopScanPulseAnimation()
+        stopPaymentCardShimmer()
+    }
+
+    // ─── Payment card shimmer ─────────────────────────────────────────────────
+    // Stronger than hero card (alpha 0 → 1 vs 0 → 0.5).
+    // Same sweep-pause pattern, but shorter pause (2.5s) to feel more "armed/active".
+
+    private fun startPaymentCardShimmer() {
+        stopPaymentCardShimmer()
+        schedulePaymentShineSweep(initialDelayMs = 200)
+    }
+
+    private fun schedulePaymentShineSweep(initialDelayMs: Long) {
+        val r = Runnable { runPaymentShineSweep() }
+        paymentShineRunnable = r
+        paymentShineHandler.postDelayed(r, initialDelayMs)
+    }
+
+    private fun runPaymentShineSweep() {
+        val card  = findViewById<View>(R.id.cardPaymentContainer) ?: return
+        val shine = findViewById<View>(R.id.viewPaymentCardShine) ?: return
+
+        val cardWidth  = card.width.toFloat()
+        if (cardWidth <= 0f) {
+            schedulePaymentShineSweep(200)
+            return
+        }
+        val shineWidth = shine.width.toFloat()
+        val startX = -shineWidth
+        val endX   = cardWidth + shineWidth
+
+        val translator = ObjectAnimator.ofFloat(shine, "translationX", startX, endX).apply {
+            duration    = 1400
+            interpolator = DecelerateInterpolator(1.5f)
+        }
+        val alphaAnim = ObjectAnimator.ofFloat(shine, "alpha", 0f, 1f, 1f, 0f).apply {
+            duration    = 1400
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+
+        translator.addListener(object : android.animation.AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: android.animation.Animator) { shine.alpha = 0f }
+            override fun onAnimationEnd(animation: android.animation.Animator) {
+                shine.alpha = 0f
+                alphaAnim.cancel()
+                schedulePaymentShineSweep(initialDelayMs = 2500)
+            }
+            override fun onAnimationCancel(animation: android.animation.Animator) {
+                shine.alpha = 0f
+                alphaAnim.cancel()
+            }
+        })
+
+        paymentShineAnimator = translator
+        alphaAnim.start()
+        translator.start()
+    }
+
+    private fun stopPaymentCardShimmer() {
+        paymentShineRunnable?.let { paymentShineHandler.removeCallbacks(it) }
+        paymentShineRunnable = null
+        paymentShineAnimator?.cancel()
+        paymentShineAnimator = null
+        findViewById<View>(R.id.viewPaymentCardShine)?.alpha = 0f
     }
 
     // BUG-002 FIX: run device capability check and show the correct blocking overlay.
