@@ -3,6 +3,7 @@ package com.piotrekwitkowski.libraryhce.ui
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -66,8 +67,20 @@ class CardsFragment : Fragment() {
                         btnSetAsActive.isEnabled = true
                         btnSetAsActive.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.accent_lime))
                         btnSetAsActive.setTextColor(ContextCompat.getColor(requireContext(), R.color.bg_surface))
-                        btnSetAsActive.setOnClickListener {
-                            appViewModel.setActiveProfile(p.name)
+                        btnSetAsActive.setOnTouchListener { v, ev ->
+                            val action = ev.action
+                            when (action) {
+                                MotionEvent.ACTION_DOWN ->
+                                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(80).start()
+                                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                                    v.animate().scaleX(1f).scaleY(1f).setDuration(150).start()
+                                    if (action == MotionEvent.ACTION_UP) {
+                                        v.performHapticFeedback(android.view.HapticFeedbackConstants.KEYBOARD_TAP)
+                                        appViewModel.setActiveProfile(p.name)
+                                    }
+                                }
+                            }
+                            true
                         }
 
                         btnDeleteCard.visibility = View.VISIBLE

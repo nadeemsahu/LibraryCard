@@ -136,10 +136,20 @@ class HomeFragment : Fragment() {
     // ─── Listeners ───────────────────────────────────────────────────────────
 
     private fun setupListeners() {
-        // UID reveal toggle
-        tvHeroCardId.setOnClickListener {
-            it.performHapticFeedback(android.view.HapticFeedbackConstants.KEYBOARD_TAP)
-            appViewModel.setUidRevealed(!appViewModel.isUidRevealed.value)
+        tvHeroCardId.setOnTouchListener { v, event ->
+            val action = event.action
+            when (action) {
+                MotionEvent.ACTION_DOWN ->
+                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(80).start()
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    v.animate().scaleX(1f).scaleY(1f).setDuration(150).start()
+                    if (action == MotionEvent.ACTION_UP) {
+                        v.performHapticFeedback(android.view.HapticFeedbackConstants.KEYBOARD_TAP)
+                        appViewModel.setUidRevealed(!appViewModel.isUidRevealed.value)
+                    }
+                }
+            }
+            true
         }
 
         // Hero card tap micro-interaction: press = scale down, release = spring back → action
@@ -212,6 +222,9 @@ class HomeFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             appViewModel.profiles.collect { profiles ->
+                for (i in 0 until layoutCardSwapper.childCount) {
+                    layoutCardSwapper.getChildAt(i).animate().cancel()
+                }
                 layoutCardSwapper.removeAllViews()
                 val active = appViewModel.activeProfile.value
                 for (p in profiles) {

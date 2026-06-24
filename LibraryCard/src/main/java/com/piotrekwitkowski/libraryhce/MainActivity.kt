@@ -232,6 +232,7 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
                 updateScanButtonUi(isActive)
                 if (isActive) {
                     // Animate scan overlay in: alpha fade
+                    layoutScanOverlay.animate().cancel()
                     layoutScanOverlay.alpha = 0f
                     layoutScanOverlay.visibility = View.VISIBLE
                     layoutScanOverlay.animate()
@@ -244,6 +245,7 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
                         nfcSessionManager.enableReaderMode(this@MainActivity)
                     }
                 } else {
+                    layoutScanOverlay.animate().cancel()
                     layoutScanOverlay.animate()
                         .alpha(0f)
                         .setDuration(180)
