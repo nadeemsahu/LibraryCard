@@ -47,9 +47,9 @@ public class HCEService extends HostApduService {
         notifications.createNotificationChannel(this);
         notifications.show("<--" + ByteUtils.toHexString(command));
 
+        firstInteraction = false;
         try {
             emulation = getEmulation();
-            firstInteraction = false;
             return Iso7816.RESPONSE_SUCCESS;
         } catch (InvalidParameterException e) {
             return Iso7816.RESPONSE_INTERNAL_ERROR;
@@ -91,6 +91,7 @@ public class HCEService extends HostApduService {
         Log.i(TAG, "onDeactivated(). Reason: " + reason);
         firstInteraction = true;
         emulation = null;
+        paymentStateRepository.notifyDeactivated();
     }
 
 }

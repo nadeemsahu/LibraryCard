@@ -36,9 +36,7 @@ public class BiometricAuthenticator implements Authenticator {
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
             case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
             case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-                // Fallback to success if biometric not available (for simulator/testing compatibility based on existing logic)
-                // In production, you would handle this more securely
-                callback.onSuccess();
+                callback.onFailed("Biometrics unavailable or not enrolled.");
                 return;
         }
 

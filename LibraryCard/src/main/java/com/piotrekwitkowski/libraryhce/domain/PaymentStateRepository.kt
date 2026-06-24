@@ -20,6 +20,9 @@ class PaymentStateRepository @Inject constructor() {
     private val _apduInteractionEvent = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     val apduInteractionEvent: SharedFlow<Unit> = _apduInteractionEvent.asSharedFlow()
 
+    private val _emulationCompleteEvent = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    val emulationCompleteEvent: SharedFlow<Unit> = _emulationCompleteEvent.asSharedFlow()
+
     fun setAuthorized(auth: Boolean, cardId: String?) {
         _isAuthorized.value = auth
         _authorizedCardId.value = cardId
@@ -27,5 +30,9 @@ class PaymentStateRepository @Inject constructor() {
 
     fun notifyInteraction() {
         _apduInteractionEvent.tryEmit(Unit)
+    }
+
+    fun notifyDeactivated() {
+        _emulationCompleteEvent.tryEmit(Unit)
     }
 }

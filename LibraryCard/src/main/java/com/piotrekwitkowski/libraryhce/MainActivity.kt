@@ -306,7 +306,15 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
 
         lifecycleScope.launch {
             paymentStateRepository.apduInteractionEvent.collect {
-                // Flash success when payment happens
+                // Pulse haptic when payment APDUs are exchanged
+                val paymentCard = findViewById<View>(R.id.cardPaymentContainer)
+                paymentCard?.performHapticFeedback(android.view.HapticFeedbackConstants.KEYBOARD_TAP)
+            }
+        }
+
+        lifecycleScope.launch {
+            paymentStateRepository.emulationCompleteEvent.collect {
+                // Flash success when payment session officially ends (deactivated)
                 Toast.makeText(this@MainActivity, "Card emulated successfully!", Toast.LENGTH_SHORT).show()
                 appViewModel.setPaymentEmulationActive(false)
             }

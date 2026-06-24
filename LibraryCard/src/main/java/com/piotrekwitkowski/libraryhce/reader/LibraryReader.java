@@ -90,14 +90,6 @@ public class LibraryReader {
             Log.i(TAG, "libraryId: " + libraryId);
             Log.i(TAG, "file0 hex: " + fullFileHex);
 
-            // Save the cloned data to SharedPreferences
-            SharedPreferences prefs = context.getSharedPreferences("LibraryNFC", Context.MODE_PRIVATE);
-            prefs.edit()
-                .putString("cloned_card_id", libraryId)
-                .putString("cloned_card_data", fullFileHex)
-                .putString("cloned_card_key", "00000000000000000000000000000000")
-                .apply();
-
             if (listener != null) {
                 listener.onCardCloned(libraryId, fullFileHex);
             }
@@ -133,14 +125,6 @@ public class LibraryReader {
 
             Log.i(TAG, "Successfully extracted fallback UID Library ID: " + libraryId);
             Log.i(TAG, "Fallback payloadHex: " + payloadHex);
-
-            // Save fallback to SharedPreferences (so HCEService works instantly)
-            SharedPreferences prefs = context.getSharedPreferences("LibraryNFC", Context.MODE_PRIVATE);
-            prefs.edit()
-                .putString("cloned_card_id", libraryId)
-                .putString("cloned_card_data", payloadHex)
-                .putString("cloned_card_key", "00000000000000000000000000000000")
-                .apply();
 
             if (listener != null) {
                 listener.onCardCloned(libraryId, payloadHex);

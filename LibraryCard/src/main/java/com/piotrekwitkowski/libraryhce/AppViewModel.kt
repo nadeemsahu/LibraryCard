@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
 
 class AppViewModel(application: Application) : AndroidViewModel(application) {
     private val _isClonerActive = MutableStateFlow(false)
@@ -41,18 +42,27 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun refreshProfiles() {
-        val context = getApplication<Application>()
-        _profiles.value = ProfileManager.getProfiles(context)
-        _activeProfile.value = ProfileManager.getActiveProfile(context)
+        viewModelScope.launch(Dispatchers.IO) {
+            val context = getApplication<Application>()
+            val fetchedProfiles = ProfileManager.getProfiles(context)
+            val fetchedActive = ProfileManager.getActiveProfile(context)
+            
+            _profiles.value = fetchedProfiles
+            _activeProfile.value = fetchedActive
+        }
     }
 
     fun setActiveProfile(name: String) {
-        ProfileManager.setActiveProfile(getApplication(), name)
-        refreshProfiles()
+        viewModelScope.launch(Dispatchers.IO) {
+            ProfileManager.setActiveProfile(getApplication(), name)
+            refreshProfiles()
+        }
     }
 
     fun deleteProfile(name: String) {
-        ProfileManager.deleteProfile(getApplication(), name)
-        refreshProfiles()
+        viewModelScope.launch(Dispatchers.IO) {
+            ProfileManager.deleteProfile(getApplication(), name)
+            refreshProfiles()
+        }
     }
 }
