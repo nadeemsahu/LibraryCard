@@ -1,0 +1,22 @@
+{
+  "nodes": [
+    {"id": "navHome", "type": "Button", "action": "switchFragment(HomeFragment)"},
+    {"id": "navCards", "type": "Button", "action": "switchFragment(CardsFragment)"},
+    {"id": "navScan", "type": "Button", "action": "setClonerActive(!value)"},
+    {"id": "btnCancelScan", "type": "Button", "action": "setClonerActive(false)"},
+    {"id": "btnCancelPayment", "type": "Button", "action": "setPaymentEmulationActive(false)"},
+    {"id": "cardActiveHero", "type": "Card", "action": "setPaymentEmulationActive(true)"},
+    {"id": "btnSetAsActive", "type": "Button", "action": "setActiveProfile(name)"},
+    {"id": "btnDeleteCard", "type": "Button", "action": "deleteProfile(name)"},
+    {"id": "systemBackButton", "type": "HardwareAction", "action": "closeApp()"}
+  ],
+  "edges": [
+    {"from": "navScan", "to": "AppViewModel.isClonerActive", "relation": "updates_state"},
+    {"from": "AppViewModel.isClonerActive", "to": "MainActivity.layoutScanOverlay", "relation": "updates_ui"},
+    {"from": "cardActiveHero", "to": "AppViewModel.isPaymentEmulationActive", "relation": "updates_state"},
+    {"from": "AppViewModel.isPaymentEmulationActive", "to": "MainActivity.layoutPaymentOverlay", "relation": "updates_ui"}
+  ],
+  "mismatches": [
+    {"element": "systemBackButton", "issue": "Does not dismiss overlays (isClonerActive/isPaymentEmulationActive), immediately exits app instead."}
+  ]
+}

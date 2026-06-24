@@ -23,6 +23,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
@@ -92,6 +93,20 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback, LibraryRead
         setupNavigation()
         observeViewModel()
         checkDeviceCapabilities()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (appViewModel.isPaymentEmulationActive.value) {
+                    appViewModel.setPaymentEmulationActive(false)
+                } else if (appViewModel.isClonerActive.value) {
+                    appViewModel.setClonerActive(false)
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                    isEnabled = true
+                }
+            }
+        })
 
         // Load default fragment
         if (savedInstanceState == null) {

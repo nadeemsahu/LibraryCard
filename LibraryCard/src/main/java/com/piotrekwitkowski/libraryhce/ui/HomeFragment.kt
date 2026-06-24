@@ -154,6 +154,8 @@ class HomeFragment : Fragment() {
 
         // Hero card tap micro-interaction: press = scale down, release = spring back → action
         cardActiveHero.setOnTouchListener { v, event ->
+            if (appViewModel.activeProfile.value == null) return@setOnTouchListener false
+
             // CR-003 FIX: capture action before animation starts. MotionEvent objects
             // are recycled by the framework; reading event.action inside withEndAction
             // (which fires 180ms later) returns an undefined/recycled value.
@@ -199,7 +201,7 @@ class HomeFragment : Fragment() {
                             "${libraryId.substring(0, 4)} ${libraryId.substring(4, 8)} ${libraryId.substring(8, 12)}"
                         else libraryId
                     }
-                    tvCardStatusLabel.text = "EMULATION ACTIVE"
+                    tvCardStatusLabel.text = "READY"
                     tvCardStatusLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.accent_lime))
                     viewHcePulseDot.backgroundTintList = ColorStateList.valueOf(
                         ContextCompat.getColor(requireContext(), R.color.accent_lime))

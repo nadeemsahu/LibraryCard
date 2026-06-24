@@ -1,0 +1,44 @@
+{
+  "states": [
+    {
+      "name": "Idle / Ready",
+      "viewModel": "AppViewModel.activeProfile != null",
+      "ui": "HomeFragment.tvCardStatusLabel = READY",
+      "actual_ui": "HomeFragment.tvCardStatusLabel = EMULATION ACTIVE",
+      "mismatch": true,
+      "issue": "HomeFragment overrides 'READY' with 'EMULATION ACTIVE' unconditionally when a profile exists, even though emulation is idle."
+    },
+    {
+      "name": "No Profile",
+      "viewModel": "AppViewModel.activeProfile == null",
+      "ui": "HomeFragment.tvCardStatusLabel = MINT A CARD",
+      "mismatch": false
+    },
+    {
+      "name": "Scanning",
+      "viewModel": "AppViewModel.isClonerActive == true",
+      "ui": "MainActivity.layoutScanOverlay = VISIBLE",
+      "mismatch": false
+    },
+    {
+      "name": "Emulating (Auth Pending)",
+      "viewModel": "AppViewModel.isPaymentEmulationActive == true, PaymentStateRepository.isAuthorized == false",
+      "ui": "MainActivity.tvPaymentStatusLabel = SECURE LOCKED",
+      "mismatch": false
+    },
+    {
+      "name": "Emulating (Authorized)",
+      "viewModel": "PaymentStateRepository.isAuthorized == true",
+      "ui": "MainActivity.tvPaymentStatusLabel = ARMED & READY",
+      "mismatch": false
+    }
+  ],
+  "transitions": [
+    {
+      "from": "Idle",
+      "to": "Emulating (Auth Pending)",
+      "trigger": "cardActiveHero.onTouch(UP)",
+      "issue": "If activeProfile == null, tapping hero card still starts emulation overlay temporarily before closing it and showing toast."
+    }
+  ]
+}

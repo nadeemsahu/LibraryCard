@@ -1,0 +1,29 @@
+{
+  "nodes": [
+    {"id": "MainActivity", "type": "Screen"},
+    {"id": "HomeFragment", "type": "Screen"},
+    {"id": "CardsFragment", "type": "Screen"},
+    {"id": "SettingsFragment", "type": "Screen"},
+    {"id": "AppViewModel", "type": "ViewModel"},
+    {"id": "PaymentStateRepository", "type": "Repository"},
+    {"id": "ProfileManager", "type": "Manager"},
+    {"id": "navScan", "type": "Button"},
+    {"id": "cardActiveHero", "type": "Card"},
+    {"id": "viewCardShine", "type": "AnimationTarget"},
+    {"id": "viewPaymentCardShine", "type": "AnimationTarget"}
+  ],
+  "edges": [
+    {"from": "MainActivity", "to": "AppViewModel", "relation": "depends_on"},
+    {"from": "HomeFragment", "to": "AppViewModel", "relation": "depends_on"},
+    {"from": "CardsFragment", "to": "AppViewModel", "relation": "depends_on"},
+    {"from": "navScan", "to": "AppViewModel.isClonerActive", "relation": "updates"},
+    {"from": "cardActiveHero", "to": "AppViewModel.isPaymentEmulationActive", "relation": "updates"},
+    {"from": "HomeFragment", "to": "viewCardShine", "relation": "animates"},
+    {"from": "MainActivity", "to": "viewPaymentCardShine", "relation": "animates"}
+  ],
+  "drift_detected": [
+    {"issue": "MainActivity overlay visibility state drift during system back button press."},
+    {"issue": "HomeFragment overriding XML defined 'READY' state to 'EMULATION ACTIVE' unconditionally."},
+    {"issue": "MainActivity launching paymentEmulation overlay when activeProfile is null, leading to instant failure toast."}
+  ]
+}
